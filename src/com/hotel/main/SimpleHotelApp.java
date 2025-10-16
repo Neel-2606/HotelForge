@@ -60,7 +60,7 @@ public class SimpleHotelApp {
     private static void createAndShowGUI() {
         try {
             // Set look and feel to system default
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             
             // Get database connection
             Connection connection = SimpleConnection.getConnection();

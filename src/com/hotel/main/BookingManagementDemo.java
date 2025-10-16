@@ -74,7 +74,7 @@ public class BookingManagementDemo extends JFrame {
     public static void main(String[] args) {
         // Set Look and Feel
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }

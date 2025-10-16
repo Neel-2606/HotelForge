@@ -49,6 +49,18 @@ public class BookingManagementPanel extends JPanel {
         loadBookings();
     }
     
+    public BookingManagementPanel(Connection connection) {
+        try {
+            this.bookingManager = new BookingManager(connection);
+        } catch (Exception e) {
+            System.err.println("Error initializing booking manager: " + e.getMessage());
+        }
+        initializeComponents();
+        setupLayout();
+        setupEventListeners();
+        loadBookings();
+    }
+    
     private void initializeComponents() {
         // Initialize table
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -176,8 +188,8 @@ public class BookingManagementPanel extends JPanel {
                 booking.getBookingId(),
                 booking.getCustomerName(),
                 booking.getRoomId(),
-                booking.getCheckInDate().format(formatter),
-                booking.getCheckOutDate().format(formatter),
+                booking.getCheckInDate() != null ? booking.getCheckInDate().format(formatter) : "",
+                booking.getCheckOutDate() != null ? booking.getCheckOutDate().format(formatter) : "",
                 booking.getStatus(),
                 String.format("₹%.2f", booking.getTotalAmount()),
                 booking.getCustomerPhone(),

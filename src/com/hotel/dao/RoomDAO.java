@@ -1,6 +1,6 @@
-package main.dao;
+package com.hotel.dao;
 
-import main.model.*;
+import com.hotel.models.*;
 import java.util.*;
 
 public class RoomDAO {

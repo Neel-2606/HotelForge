@@ -23,7 +23,7 @@ public class AuthenticationService {
      */
     public static User authenticate(String username, String password) {
         try (Connection conn = UnifiedDatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+            String sql = "SELECT * FROM users WHERE username = ? AND password = SHA2(?, 256)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
             stmt.setString(2, password);

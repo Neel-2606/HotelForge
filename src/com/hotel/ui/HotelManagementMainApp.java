@@ -2,7 +2,7 @@ package com.hotel.ui;
 
 import com.hotel.models.User;
 import com.hotel.services.AuthenticationService;
-import main.ui.RoomManagementPanel;
+import com.hotel.ui.RoomManagementPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

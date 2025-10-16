@@ -48,6 +48,18 @@ public class SimpleBookingPanel extends JPanel {
         
         createComponents();
         setupLayout();
+    }
+    
+    // Constructor with connection parameter
+    public SimpleBookingPanel(Connection connection) {
+        try {
+            this.bookingManager = new SimpleBookingManager(connection);
+        } catch (Exception e) {
+            System.err.println("Error initializing booking manager: " + e.getMessage());
+        }
+        
+        createComponents();
+        setupLayout();
         addEventListeners();
         loadBookings();
     }

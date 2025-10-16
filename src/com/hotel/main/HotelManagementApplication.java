@@ -16,7 +16,7 @@ public class HotelManagementApplication {
         
         // Set system look and feel
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeel());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             System.err.println("Could not set system look and feel: " + e.getMessage());
         }

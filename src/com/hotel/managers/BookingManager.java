@@ -6,6 +6,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+// Explicitly import java.sql.Date to resolve ambiguity
+import java.sql.Date;
 
 /**
  * BookingManager class for handling all booking operations

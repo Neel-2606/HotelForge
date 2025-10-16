@@ -1,4 +1,4 @@
-package main.model;
+package com.hotel.models;
 
 public enum RoomType {
     SINGLE,
