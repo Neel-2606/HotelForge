@@ -2,13 +2,8 @@ package com.hotel.models;
 
 import java.time.LocalDate;
 
-/**
- * Simple Booking class - demonstrates basic OOP concepts
- * 1. Encapsulation - private variables with public getters/setters
- * 2. Constructor - to create booking objects
- */
 public class Booking {
-    // Private variables (Encapsulation)
+    
     private int bookingId;
     private int customerId;
     private int roomId;
@@ -17,31 +12,27 @@ public class Booking {
     private String customerPhone;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private String status;         // CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELLED
+    private String status;         
     private double totalAmount;
     private LocalDate bookingDate;
 
-    // Default Constructor
     public Booking() {
         this.status = "CONFIRMED";
     }
-    
-    // Parameterized Constructor for simple version
-    public Booking(int roomId, String customerName, String customerEmail, 
+        public Booking(int roomId, String customerName, String customerEmail, 
                    String customerPhone, String checkInDate, String checkOutDate, double totalAmount) {
         this.roomId = roomId;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerPhone = customerPhone;
-        this.checkInDate = null; // Will be set using setter
-        this.checkOutDate = null; // Will be set using setter
+        this.checkInDate = null; 
+        this.checkOutDate = null; 
         this.setCheckInDate(checkInDate);
         this.setCheckOutDate(checkOutDate);
         this.totalAmount = totalAmount;
         this.status = "CONFIRMED";
     }
     
-    // Full constructor for BookingManager
     public Booking(int bookingId, int customerId, int roomId, 
                   String customerName, String customerEmail, String customerPhone,
                   LocalDate checkInDate, LocalDate checkOutDate, 
@@ -59,7 +50,6 @@ public class Booking {
         this.bookingDate = bookingDate;
     }
     
-    // Simple method to display booking info
     public void displayBookingInfo() {
         System.out.println("Booking ID: " + bookingId);
         System.out.println("Customer: " + customerName);
@@ -70,7 +60,6 @@ public class Booking {
         System.out.println("Amount: ₹" + totalAmount);
     }
 
-    // Getter methods (to access private variables)
     public int getBookingId() { 
         return bookingId; 
     }
@@ -115,7 +104,7 @@ public class Booking {
         return bookingDate;
     }
     
-    // Setter methods (to modify private variables)
+    
     public void setBookingId(int bookingId) { 
         this.bookingId = bookingId; 
     }
@@ -140,13 +129,11 @@ public class Booking {
         this.customerPhone = customerPhone; 
     }
     
-    // Overloaded methods to handle both String and LocalDate
     public void setCheckInDate(String checkInDate) {
         if (checkInDate != null && !checkInDate.isEmpty()) {
             try {
                 this.checkInDate = LocalDate.parse(checkInDate);
             } catch (Exception e) {
-                // Handle parsing error - use a default date or current date
                 this.checkInDate = LocalDate.now();
             }
         }
@@ -161,7 +148,6 @@ public class Booking {
             try {
                 this.checkOutDate = LocalDate.parse(checkOutDate);
             } catch (Exception e) {
-                // Handle parsing error - use check-in date + 1 day as default
                 this.checkOutDate = (this.checkInDate != null) ? 
                     this.checkInDate.plusDays(1) : LocalDate.now().plusDays(1);
             }

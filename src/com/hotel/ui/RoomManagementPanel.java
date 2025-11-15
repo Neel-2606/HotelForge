@@ -2,14 +2,13 @@ package com.hotel.ui;
 
 import com.hotel.dao.RoomDAO;
 import com.hotel.models.*;
-
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
 
 public class RoomManagementPanel extends JFrame {
     private JTextField txtRoomNo, txtPrice, txtFloor, txtSearch;
@@ -29,14 +28,12 @@ public class RoomManagementPanel extends JFrame {
         setLayout(new BorderLayout(15, 15));
         getContentPane().setBackground(new Color(245, 247, 250));
 
-        // ---------- Title ----------
         JLabel title = new JLabel("🏨 Hotel Room Management", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 22));
         title.setForeground(new Color(40, 40, 90));
         title.setBorder(new EmptyBorder(10, 0, 10, 0));
         add(title, BorderLayout.NORTH);
 
-        // ---------- Form Panel ----------
         JPanel form = new JPanel(new GridBagLayout());
         form.setBackground(new Color(255, 255, 255));
         form.setBorder(new CompoundBorder(new EmptyBorder(15, 15, 15, 15),
@@ -90,7 +87,6 @@ public class RoomManagementPanel extends JFrame {
         c.gridwidth = 2;
         form.add(btnPanel, c);
 
-        // ---------- Table Panel ----------
         String[] columns = {"Room No", "Type", "Price", "Status", "Floor", "Amenities"};
         model = new DefaultTableModel(columns, 0) {
             @Override
@@ -109,7 +105,6 @@ public class RoomManagementPanel extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        // ---------- Search Panel ----------
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         searchPanel.setBackground(Color.WHITE);
         searchPanel.setBorder(new EmptyBorder(15, 15, 0, 15));
@@ -118,19 +113,16 @@ public class RoomManagementPanel extends JFrame {
         searchPanel.add(new JLabel("Search:"));
         searchPanel.add(txtSearch);
 
-        // ---------- Right Panel (Table + Search) ----------
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBackground(Color.WHITE);
         rightPanel.add(searchPanel, BorderLayout.NORTH);
         rightPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // ---------- Main Layout ----------
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, form, rightPanel);
         splitPane.setDividerLocation(350);
         splitPane.setBorder(null);
         add(splitPane, BorderLayout.CENTER);
 
-        // ---------- Event Listeners ----------
         btnAdd.addActionListener(e -> addRoom());
         btnUpdate.addActionListener(e -> updateRoom());
         btnDelete.addActionListener(e -> deleteRoom());
@@ -158,7 +150,6 @@ public class RoomManagementPanel extends JFrame {
             }
         });
 
-        // Auto-fill price when type changes
         cmbType.addActionListener(e -> {
             RoomType type = (RoomType) cmbType.getSelectedItem();
             if (type != null) txtPrice.setText(String.valueOf(type.getBasePrice()));
@@ -282,7 +273,7 @@ public class RoomManagementPanel extends JFrame {
     private void filterTable(String keyword) {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
-        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword)); // Case-insensitive
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword)); 
     }
 
     public static void main(String[] args) {

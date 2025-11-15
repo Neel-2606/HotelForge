@@ -20,7 +20,6 @@ public class Room {
         this.price = price;
     }
 
-    // Getters & Setters
     public int getRoomNo() { return roomNo; }
     public RoomType getRoomType() { return roomType; }
     public String getStatus() { return status; }

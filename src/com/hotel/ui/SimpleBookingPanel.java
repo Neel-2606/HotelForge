@@ -1,25 +1,17 @@
 package com.hotel.ui;
 
-import com.hotel.models.Booking;
 import com.hotel.managers.SimpleBookingManager;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import com.hotel.models.Booking;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
-/**
- * Simple Booking Panel - demonstrates basic Swing components
- * 1. JFrame, JPanel, JButton, JTable
- * 2. ActionListener for button clicks
- * 3. Basic event handling
- */
 public class SimpleBookingPanel extends JPanel {
     
-    // Swing components
     private JTable bookingTable;
     private DefaultTableModel tableModel;
     private JButton refreshButton;
@@ -29,16 +21,13 @@ public class SimpleBookingPanel extends JPanel {
     private JTextField searchField;
     private JButton searchButton;
     
-    // Business logic
     private SimpleBookingManager bookingManager;
     
-    // Table column names
     private String[] columnNames = {
         "Booking ID", "Customer Name", "Room ID", "Check-In", 
         "Check-Out", "Status", "Amount", "Phone"
     };
     
-    // Constructor
     public SimpleBookingPanel() {
         try {
             this.bookingManager = new SimpleBookingManager(com.hotel.database.UnifiedDatabaseConnection.getConnection());
@@ -50,7 +39,6 @@ public class SimpleBookingPanel extends JPanel {
         setupLayout();
     }
     
-    // Constructor with connection parameter
     public SimpleBookingPanel(Connection connection) {
         try {
             this.bookingManager = new SimpleBookingManager(connection);
@@ -64,63 +52,43 @@ public class SimpleBookingPanel extends JPanel {
         loadBookings();
     }
     
-    
-    /**
-     * Create all Swing components
-     */
     private void createComponents() {
-        // Create table
         tableModel = new DefaultTableModel(columnNames, 0);
         bookingTable = new JTable(tableModel);
         bookingTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
-        // Create buttons
         refreshButton = new JButton("Refresh");
         checkInButton = new JButton("Check In");
         checkOutButton = new JButton("Check Out");
         cancelButton = new JButton("Cancel Booking");
         searchButton = new JButton("Search");
         
-        // Create search field
         searchField = new JTextField(20);
     }
     
-    /**
-     * Setup layout using basic layout managers
-     */
     private void setupLayout() {
-        // Main panel
         setLayout(new BorderLayout());
         
-        // Top panel for search
         JPanel topPanel = new JPanel(new FlowLayout());
         topPanel.add(new JLabel("Search Customer:"));
         topPanel.add(searchField);
         topPanel.add(searchButton);
         topPanel.add(refreshButton);
         
-        // Center panel for table
         JScrollPane scrollPane = new JScrollPane(bookingTable);
         
-        // Bottom panel for buttons
         JPanel bottomPanel = new JPanel(new FlowLayout());
         bottomPanel.add(checkInButton);
         bottomPanel.add(checkOutButton);
         bottomPanel.add(cancelButton);
         
-        // Add panels to main frame
         add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
     }
     
-    /**
-     * Add event listeners to buttons
-     * Demonstrates: ActionListener interface, Anonymous inner classes
-     */
     private void addEventListeners() {
         
-        // Refresh button listener
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,7 +96,6 @@ public class SimpleBookingPanel extends JPanel {
             }
         });
         
-        // Check-in button listener
         checkInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,7 +103,6 @@ public class SimpleBookingPanel extends JPanel {
             }
         });
         
-        // Check-out button listener
         checkOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,7 +110,6 @@ public class SimpleBookingPanel extends JPanel {
             }
         });
         
-        // Cancel button listener
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,7 +117,6 @@ public class SimpleBookingPanel extends JPanel {
             }
         });
         
-        // Search button listener
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -161,18 +125,11 @@ public class SimpleBookingPanel extends JPanel {
         });
     }
     
-    /**
-     * Load all bookings into table
-     * Demonstrates: ArrayList usage, Table model operations
-     */
     private void loadBookings() {
-        // Clear existing data
         tableModel.setRowCount(0);
         
-        // Get bookings from manager
         ArrayList<Booking> bookings = bookingManager.getAllBookings();
         
-        // Add each booking to table
         for (int i = 0; i < bookings.size(); i++) {
             Booking booking = bookings.get(i);
             
@@ -190,21 +147,15 @@ public class SimpleBookingPanel extends JPanel {
             tableModel.addRow(row);
         }
         
-        // Show message
         JOptionPane.showMessageDialog(this, 
             "Loaded " + bookings.size() + " bookings", 
             "Info", 
             JOptionPane.INFORMATION_MESSAGE);
     }
     
-    /**
-     * Perform check-in operation
-     * Demonstrates: Table selection, Conditional statements
-     */
     private void performCheckIn() {
         int selectedRow = bookingTable.getSelectedRow();
         
-        // Check if a row is selected
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, 
                 "Please select a booking to check in", 
@@ -213,11 +164,9 @@ public class SimpleBookingPanel extends JPanel {
             return;
         }
         
-        // Get booking ID from selected row
         int bookingId = (Integer) tableModel.getValueAt(selectedRow, 0);
         String status = (String) tableModel.getValueAt(selectedRow, 5);
         
-        // Check if booking can be checked in
         if (!status.equals("CONFIRMED")) {
             JOptionPane.showMessageDialog(this, 
                 "Only CONFIRMED bookings can be checked in", 
@@ -226,7 +175,6 @@ public class SimpleBookingPanel extends JPanel {
             return;
         }
         
-        // Perform check-in
         boolean success = bookingManager.checkInBooking(bookingId);
         
         if (success) {
@@ -234,7 +182,7 @@ public class SimpleBookingPanel extends JPanel {
                 "Booking checked in successfully!", 
                 "Success", 
                 JOptionPane.INFORMATION_MESSAGE);
-            loadBookings(); // Refresh table
+            loadBookings(); 
         } else {
             JOptionPane.showMessageDialog(this, 
                 "Failed to check in booking", 
@@ -243,9 +191,7 @@ public class SimpleBookingPanel extends JPanel {
         }
     }
     
-    /**
-     * Perform check-out operation
-     */
+    
     private void performCheckOut() {
         int selectedRow = bookingTable.getSelectedRow();
         
@@ -272,9 +218,6 @@ public class SimpleBookingPanel extends JPanel {
         }
     }
     
-    /**
-     * Perform cancel operation
-     */
     private void performCancel() {
         int selectedRow = bookingTable.getSelectedRow();
         
@@ -286,7 +229,6 @@ public class SimpleBookingPanel extends JPanel {
         int bookingId = (Integer) tableModel.getValueAt(selectedRow, 0);
         String customerName = (String) tableModel.getValueAt(selectedRow, 1);
         
-        // Confirm cancellation
         int confirm = JOptionPane.showConfirmDialog(this, 
             "Are you sure you want to cancel booking for " + customerName + "?", 
             "Confirm Cancellation", 
@@ -304,10 +246,6 @@ public class SimpleBookingPanel extends JPanel {
         }
     }
     
-    /**
-     * Perform search operation
-     * Demonstrates: String operations, ArrayList filtering
-     */
     private void performSearch() {
         String searchText = searchField.getText().trim();
         
@@ -316,13 +254,10 @@ public class SimpleBookingPanel extends JPanel {
             return;
         }
         
-        // Clear table
         tableModel.setRowCount(0);
         
-        // Search bookings
         ArrayList<Booking> searchResults = bookingManager.searchBookingsByName(searchText);
         
-        // Display results
         for (Booking booking : searchResults) {
             Object[] row = {
                 booking.getBookingId(),
