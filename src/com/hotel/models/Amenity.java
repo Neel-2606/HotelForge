@@ -1,5 +1,6 @@
 package com.hotel.models;
 
-public enum Amenity {
+public enum Amenity 
+{
     AC, WIFI, TV
 }

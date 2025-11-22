@@ -1,16 +1,48 @@
 package com.hotel.ui;
 
 import com.hotel.dao.RoomDAO;
-import com.hotel.models.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import com.hotel.models.Amenity;
+import com.hotel.models.Room;
+import com.hotel.models.RoomType;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
-public class RoomManagementPanel extends JFrame {
+
+public class RoomManagementPanel extends JFrame 
+{
     private JTextField txtRoomNo, txtPrice, txtFloor, txtSearch;
     private JComboBox<RoomType> cmbType;
     private JComboBox<String> cmbStatus;
@@ -19,7 +51,8 @@ public class RoomManagementPanel extends JFrame {
     private DefaultTableModel model;
     private RoomDAO dao;
 
-    public RoomManagementPanel() {
+    public RoomManagementPanel() 
+    {
         dao = new RoomDAO();
 
         setTitle("🏨 Hotel Room Management Dashboard");
@@ -45,9 +78,9 @@ public class RoomManagementPanel extends JFrame {
         c.fill = GridBagConstraints.HORIZONTAL;
 
         txtRoomNo = new JTextField();
-        cmbType = new JComboBox<>(RoomType.values());
+        cmbType = new JComboBox<RoomType>(RoomType.values());
         txtPrice = new JTextField();
-        cmbStatus = new JComboBox<>(new String[]{"Available", "Occupied", "Maintenance", "Cleaning", "Out of Order"});
+        cmbStatus = new JComboBox<String>(new String[]{"Available", "Occupied", "Maintenance", "Cleaning", "Out of Order"});
         txtFloor = new JTextField();
 
         cbAC = new JCheckBox("AC");
@@ -88,9 +121,10 @@ public class RoomManagementPanel extends JFrame {
         form.add(btnPanel, c);
 
         String[] columns = {"Room No", "Type", "Price", "Status", "Floor", "Amenities"};
-        model = new DefaultTableModel(columns, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
+        model = new DefaultTableModel(columns, 0) 
+        {
+            public boolean isCellEditable(int row, int column) 
+            {
                 return false;
             }
         };
@@ -123,20 +157,58 @@ public class RoomManagementPanel extends JFrame {
         splitPane.setBorder(null);
         add(splitPane, BorderLayout.CENTER);
 
-        btnAdd.addActionListener(e -> addRoom());
-        btnUpdate.addActionListener(e -> updateRoom());
-        btnDelete.addActionListener(e -> deleteRoom());
-        btnClear.addActionListener(e -> clearForm());
-
-        txtSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { filterTable(txtSearch.getText()); }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { filterTable(txtSearch.getText()); }
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { filterTable(txtSearch.getText()); }
+        btnAdd.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                addRoom();
+            }
+        });
+        
+        btnUpdate.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                updateRoom();
+            }
+        });
+        
+        btnDelete.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                deleteRoom();
+            }
+        });
+        
+        btnClear.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                clearForm();
+            }
         });
 
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
+        txtSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() 
+        {
+            public void changedUpdate(javax.swing.event.DocumentEvent e) 
+            { 
+                filterTable(txtSearch.getText()); 
+            }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) 
+            { 
+                filterTable(txtSearch.getText()); 
+            }
+            public void insertUpdate(javax.swing.event.DocumentEvent e) 
+            { 
+                filterTable(txtSearch.getText()); 
+            }
+        });
+
+        table.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent e) 
+            {
                 int row = table.getSelectedRow();
                 txtRoomNo.setText(model.getValueAt(row, 0).toString());
                 cmbType.setSelectedItem(RoomType.valueOf(model.getValueAt(row, 1).toString()));
@@ -150,16 +222,24 @@ public class RoomManagementPanel extends JFrame {
             }
         });
 
-        cmbType.addActionListener(e -> {
-            RoomType type = (RoomType) cmbType.getSelectedItem();
-            if (type != null) txtPrice.setText(String.valueOf(type.getBasePrice()));
+        cmbType.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                RoomType type = (RoomType) cmbType.getSelectedItem();
+                if (type != null) 
+                {
+                    txtPrice.setText(String.valueOf(type.getBasePrice()));
+                }
+            }
         });
 
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private void addField(JPanel panel, GridBagConstraints c, int row, String label, JComponent field) {
+    private void addField(JPanel panel, GridBagConstraints c, int row, String label, JComponent field) 
+    {
         c.gridx = 0;
         c.gridy = row;
         c.gridwidth = 1;
@@ -168,7 +248,8 @@ public class RoomManagementPanel extends JFrame {
         panel.add(field, c);
     }
 
-    private JButton styledButton(String text, Color color) {
+    private JButton styledButton(String text, Color color) 
+    {
         JButton button = new JButton(text);
         button.setBackground(color);
         button.setForeground(Color.WHITE);
@@ -179,30 +260,46 @@ public class RoomManagementPanel extends JFrame {
         return button;
     }
 
-    private void refreshTable() {
+    private void refreshTable() 
+    {
         model.setRowCount(0);
-        for (Room r : dao.getAllRooms()) {
-            model.addRow(new Object[]{
-                    r.getRoomNo(),
-                    r.getRoomType(),
-                    r.getPrice(),
-                    r.getStatus(),
-                    r.getFloor(),
-                    r.getAmenities()
+        List<Room> rooms = dao.getAllRooms();
+        for (int i = 0; i < rooms.size(); i++) 
+        {
+            Room r = rooms.get(i);
+            model.addRow(new Object[]
+            {
+                r.getRoomNo(),
+                r.getRoomType(),
+                r.getPrice(),
+                r.getStatus(),
+                r.getFloor(),
+                r.getAmenities()
             });
         }
     }
 
-    private void addRoom() {
-        try {
+    private void addRoom() 
+    {
+        try 
+        {
             int roomNo = Integer.parseInt(txtRoomNo.getText());
             double price = Double.parseDouble(txtPrice.getText());
             int floor = Integer.parseInt(txtFloor.getText());
 
-            List<Amenity> amenities = new ArrayList<>();
-            if (cbAC.isSelected()) amenities.add(Amenity.AC);
-            if (cbWiFi.isSelected()) amenities.add(Amenity.WIFI);
-            if (cbTV.isSelected()) amenities.add(Amenity.TV);
+            List<Amenity> amenities = new ArrayList<Amenity>();
+            if (cbAC.isSelected()) 
+            {
+                amenities.add(Amenity.AC);
+            }
+            if (cbWiFi.isSelected()) 
+            {
+                amenities.add(Amenity.WIFI);
+            }
+            if (cbTV.isSelected()) 
+            {
+                amenities.add(Amenity.TV);
+            }
 
             Room r = new Room(roomNo, (RoomType) cmbType.getSelectedItem(),
                     cmbStatus.getSelectedItem().toString(), floor, amenities, price);
@@ -211,55 +308,83 @@ public class RoomManagementPanel extends JFrame {
             JOptionPane.showMessageDialog(this, "✅ Room Added Successfully!");
             refreshTable();
             clearForm();
-        } catch (NumberFormatException ex) {
+        } 
+        catch (NumberFormatException ex) 
+        {
             JOptionPane.showMessageDialog(this, "Invalid Number Format!");
-        } catch (IllegalArgumentException ex) {
+        } 
+        catch (IllegalArgumentException ex) 
+        {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
 
-    private void updateRoom() {
-        try {
+    private void updateRoom() 
+    {
+        try 
+        {
             int roomNo = Integer.parseInt(txtRoomNo.getText());
             double price = Double.parseDouble(txtPrice.getText());
             int floor = Integer.parseInt(txtFloor.getText());
 
-            List<Amenity> amenities = new ArrayList<>();
-            if (cbAC.isSelected()) amenities.add(Amenity.AC);
-            if (cbWiFi.isSelected()) amenities.add(Amenity.WIFI);
-            if (cbTV.isSelected()) amenities.add(Amenity.TV);
+            List<Amenity> amenities = new ArrayList<Amenity>();
+            if (cbAC.isSelected()) 
+            {
+                amenities.add(Amenity.AC);
+            }
+            if (cbWiFi.isSelected()) 
+            {
+                amenities.add(Amenity.WIFI);
+            }
+            if (cbTV.isSelected()) 
+            {
+                amenities.add(Amenity.TV);
+            }
 
             Room r = new Room(roomNo, (RoomType) cmbType.getSelectedItem(),
                     cmbStatus.getSelectedItem().toString(), floor, amenities, price);
 
-            if (dao.updateRoom(r)) {
+            if (dao.updateRoom(r)) 
+            {
                 JOptionPane.showMessageDialog(this, "Room Updated Successfully!");
                 refreshTable();
-            } else {
+            } 
+            else 
+            {
                 JOptionPane.showMessageDialog(this, "Room not found!");
             }
 
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             JOptionPane.showMessageDialog(this, "Error Updating Room!");
         }
     }
 
-    private void deleteRoom() {
-        try {
+    private void deleteRoom() 
+    {
+        try 
+        {
             int roomNo = Integer.parseInt(txtRoomNo.getText());
-            if (dao.deleteRoom(roomNo)) {
+            if (dao.deleteRoom(roomNo)) 
+            {
                 JOptionPane.showMessageDialog(this, "Room Deleted!");
                 refreshTable();
                 clearForm();
-            } else {
+            } 
+            else 
+            {
                 JOptionPane.showMessageDialog(this, "Room not found!");
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             JOptionPane.showMessageDialog(this, "Select a valid room!");
         }
     }
 
-    private void clearForm() {
+    private void clearForm() 
+    {
         txtRoomNo.setText("");
         txtPrice.setText("");
         txtFloor.setText("");
@@ -270,13 +395,15 @@ public class RoomManagementPanel extends JFrame {
         cmbStatus.setSelectedIndex(0);
     }
 
-    private void filterTable(String keyword) {
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+    private void filterTable(String keyword) 
+    {
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
         table.setRowSorter(sorter);
         sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword)); 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         new RoomManagementPanel();
     }
 }
