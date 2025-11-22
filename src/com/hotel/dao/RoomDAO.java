@@ -1,23 +1,20 @@
 package com.hotel.dao;
-
 import com.hotel.models.Amenity;
 import com.hotel.models.Room;
 import com.hotel.models.RoomType;
 import java.util.ArrayList;
 import java.util.List;
-
 public class RoomDAO 
-{
+{                   //DAO = Data Access Object:store,add,update,delete data
     private List<Room> roomList;
-    
     public RoomDAO()
     {
         roomList = new ArrayList<Room>();
-    }
-    
+    } 
+    //each room number is unique.
     public void addRoom(Room r) 
     {
-        for (int i = 0; i < roomList.size(); i++) 
+        for (int i = 0;i<roomList.size();i++) 
         {
             Room existing = roomList.get(i);
             if (existing.getRoomNo() == r.getRoomNo()) 
@@ -27,15 +24,14 @@ public class RoomDAO
         }
         roomList.add(r);
     }
-
     public List<Room> getAllRooms() 
     {
         return roomList;
     }
-
+    //update room details
     public boolean updateRoom(Room r) 
     {
-        for (int i = 0; i < roomList.size(); i++) 
+        for (int i=0;i<roomList.size();i++) 
         {
             if (roomList.get(i).getRoomNo() == r.getRoomNo()) 
             {
@@ -45,10 +41,10 @@ public class RoomDAO
         }
         return false;
     }
-
+    //delete room details
     public boolean deleteRoom(int roomNo) 
     {
-        for (int i = 0; i < roomList.size(); i++) 
+        for (int i = 0;i<roomList.size();i++) 
         {
             if (roomList.get(i).getRoomNo() == roomNo) 
             {

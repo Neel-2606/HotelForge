@@ -9,7 +9,8 @@ public enum RoomType
     PRESIDENTIAL;
 
     public double getBasePrice() 
-    {
+    {                   //return room prices,if user enter the type of room 
+                        //it will return the price of that room           
         switch (this) 
         {
             case SINGLE: 

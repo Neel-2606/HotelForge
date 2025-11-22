@@ -8,9 +8,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
-
+//Hotel Room Management Dashboard
 public class RoomManagementPanel extends JFrame 
-{
+{        
     private JTextField txtRoomNo, txtPrice, txtFloor, txtSearch;
     private JComboBox<RoomType> cmbType;
     private JComboBox<String> cmbStatus;
@@ -27,12 +27,14 @@ public class RoomManagementPanel extends JFrame
         setLayout(new BorderLayout(15, 15));
         getContentPane().setBackground(new Color(245, 247, 250));
 
+        //Title Panel
         JLabel title = new JLabel("🏨 Hotel Room Management", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 22));
         title.setForeground(new Color(40, 40, 90));
         title.setBorder(new EmptyBorder(10, 0, 10, 0));
         add(title, BorderLayout.NORTH);
-
+        
+        //Form Panel    
         JPanel form = new JPanel(new GridBagLayout());
         form.setBackground(new Color(255, 255, 255));
         form.setBorder(new CompoundBorder(new EmptyBorder(15, 15, 15, 15),
@@ -42,13 +44,13 @@ public class RoomManagementPanel extends JFrame
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(8, 8, 8, 8);
         c.fill = GridBagConstraints.HORIZONTAL;
-
+        //Form Fields
         txtRoomNo = new JTextField();
         cmbType = new JComboBox<RoomType>(RoomType.values());
         txtPrice = new JTextField();
         cmbStatus = new JComboBox<String>(new String[]{"Available", "Occupied", "Maintenance", "Cleaning", "Out of Order"});
         txtFloor = new JTextField();
-
+        //checkboxes
         cbAC = new JCheckBox("AC");
         cbWiFi = new JCheckBox("WiFi");
         cbTV = new JCheckBox("TV");
@@ -57,10 +59,11 @@ public class RoomManagementPanel extends JFrame
         cbTV.setBackground(Color.WHITE);
         JPanel amPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         amPanel.setBackground(Color.WHITE);
-        amPanel.add(cbAC);
+        amPanel.add(cbAC);  //checkboxes
         amPanel.add(cbWiFi);
         amPanel.add(cbTV);
-
+        
+        //Form Fields
         int row = 0;
         addField(form, c, row++, "Room Number:", txtRoomNo);
         addField(form, c, row++, "Room Type:", cmbType);
@@ -69,11 +72,12 @@ public class RoomManagementPanel extends JFrame
         addField(form, c, row++, "Floor:", txtFloor);
         addField(form, c, row++, "Amenities:", amPanel);
 
+        //Buttons
         JButton btnAdd = styledButton("Add", new Color(60, 180, 75));
         JButton btnUpdate = styledButton("Update", new Color(60, 120, 240));
         JButton btnDelete = styledButton("Delete", new Color(220, 70, 70));
         JButton btnClear = styledButton("Clear", new Color(140, 140, 140));
-
+        //Button Panel
         JPanel btnPanel = new JPanel(new FlowLayout());
         btnPanel.setBackground(Color.WHITE);
         btnPanel.add(btnAdd);
@@ -85,7 +89,7 @@ public class RoomManagementPanel extends JFrame
         c.gridy = row;
         c.gridwidth = 2;
         form.add(btnPanel, c);
-
+        //Table
         String[] columns = {"Room No", "Type", "Price", "Status", "Floor", "Amenities"};
         model = new DefaultTableModel(columns, 0) 
         {
@@ -101,7 +105,7 @@ public class RoomManagementPanel extends JFrame
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setShowGrid(true);
         table.setGridColor(new Color(230, 230, 230));
-
+        //Table Panel
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(new EmptyBorder(15, 15, 15, 15));
 
@@ -123,6 +127,7 @@ public class RoomManagementPanel extends JFrame
         splitPane.setBorder(null);
         add(splitPane, BorderLayout.CENTER);
 
+        //Event Handlers
         btnAdd.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
@@ -196,6 +201,8 @@ public class RoomManagementPanel extends JFrame
         setLocationRelativeTo(null);
         setVisible(true);
     }
+    //Add Field,styledButton(),addField(),refreshTable(),addRoom()
+    // updateRoom(),deleteRoom(),clearForm(),filterTable(),styledButton() 
     private void addField(JPanel panel, GridBagConstraints c, int row, String label, JComponent field) 
     {
         c.gridx = 0;
@@ -352,6 +359,7 @@ public class RoomManagementPanel extends JFrame
         table.setRowSorter(sorter);
         sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword)); 
     }
+    //Main Method   
     public static void main(String[] args) 
     {
         new RoomManagementPanel();
