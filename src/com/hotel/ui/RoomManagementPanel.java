@@ -1,45 +1,13 @@
 package com.hotel.ui;
 
-import com.hotel.dao.RoomDAO;
-import com.hotel.models.Amenity;
-import com.hotel.models.Room;
-import com.hotel.models.RoomType;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import javax.swing.RowFilter;
-
+import com.hotel.dao.*;
+import com.hotel.models.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
 
 public class RoomManagementPanel extends JFrame 
 {
@@ -50,11 +18,9 @@ public class RoomManagementPanel extends JFrame
     private JTable table;
     private DefaultTableModel model;
     private RoomDAO dao;
-
     public RoomManagementPanel() 
     {
         dao = new RoomDAO();
-
         setTitle("🏨 Hotel Room Management Dashboard");
         setSize(1000, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -164,23 +130,20 @@ public class RoomManagementPanel extends JFrame
                 addRoom();
             }
         });
-        
         btnUpdate.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
             {
                 updateRoom();
             }
-        });
-        
+        });        
         btnDelete.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
             {
                 deleteRoom();
             }
-        });
-        
+        }); 
         btnClear.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
@@ -188,7 +151,6 @@ public class RoomManagementPanel extends JFrame
                 clearForm();
             }
         });
-
         txtSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() 
         {
             public void changedUpdate(javax.swing.event.DocumentEvent e) 
@@ -204,7 +166,6 @@ public class RoomManagementPanel extends JFrame
                 filterTable(txtSearch.getText()); 
             }
         });
-
         table.addMouseListener(new MouseAdapter() 
         {
             public void mouseClicked(MouseEvent e) 
@@ -221,7 +182,6 @@ public class RoomManagementPanel extends JFrame
                 cbTV.setSelected(amenities.contains("TV"));
             }
         });
-
         cmbType.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
@@ -233,11 +193,9 @@ public class RoomManagementPanel extends JFrame
                 }
             }
         });
-
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
     private void addField(JPanel panel, GridBagConstraints c, int row, String label, JComponent field) 
     {
         c.gridx = 0;
@@ -247,7 +205,6 @@ public class RoomManagementPanel extends JFrame
         c.gridx = 1;
         panel.add(field, c);
     }
-
     private JButton styledButton(String text, Color color) 
     {
         JButton button = new JButton(text);
@@ -259,7 +216,6 @@ public class RoomManagementPanel extends JFrame
         button.setPreferredSize(new Dimension(100, 35));
         return button;
     }
-
     private void refreshTable() 
     {
         model.setRowCount(0);
@@ -278,7 +234,6 @@ public class RoomManagementPanel extends JFrame
             });
         }
     }
-
     private void addRoom() 
     {
         try 
@@ -318,7 +273,6 @@ public class RoomManagementPanel extends JFrame
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
-
     private void updateRoom() 
     {
         try 
@@ -353,7 +307,6 @@ public class RoomManagementPanel extends JFrame
             {
                 JOptionPane.showMessageDialog(this, "Room not found!");
             }
-
         } 
         catch (Exception ex) 
         {
@@ -382,7 +335,6 @@ public class RoomManagementPanel extends JFrame
             JOptionPane.showMessageDialog(this, "Select a valid room!");
         }
     }
-
     private void clearForm() 
     {
         txtRoomNo.setText("");
@@ -394,14 +346,12 @@ public class RoomManagementPanel extends JFrame
         cmbType.setSelectedIndex(0);
         cmbStatus.setSelectedIndex(0);
     }
-
     private void filterTable(String keyword) 
     {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
         table.setRowSorter(sorter);
         sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword)); 
     }
-
     public static void main(String[] args) 
     {
         new RoomManagementPanel();
